@@ -7,23 +7,34 @@ dotenv.config();
 
 const sendEmail = async (req, res) => {
     try{
-        const { email, message } = req.body;
+        console.log(req);
+
+        const { email, subject, message, host, service, port, user, password } = req.body;
 
         if (!email){
             return res.status(400).json({ message : "Email requerido"})
         }
 
+        console.log(req.body);
+
         const options = {
             to: email,
-            subject: "Test",
+            subject: subject,
             message: message,
+            host: host,
+            service: service,
+            port: port,
+            user: user,
+            password: password,
         };
 
         await sendEmails(options);
-
-        res.status(200).json({
-            message: "Email enviado con éxito"
-        });
+        
+        if (res != undefined){
+            res.status(200).json({
+                message: "Email enviado con éxito"
+            });
+        }
     }
     catch(error){
         console.error(error);

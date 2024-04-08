@@ -2,13 +2,15 @@ import nodeMailer from 'nodemailer';
 //const nodeMailer = require("nodemailer");
 
 const sendEmails = async (options) => {
+    console.log("utils")
+    console.log(options);
     const transporter = nodeMailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: process.env.SMTP_PORT,
-        service: process.env.SMTP_SERVICE,
+        host: options.host || process.env.SMTP_HOST,
+        port: options.port || process.env.SMTP_PORT,
+        service: options.service || process.env.SMTP_SERVICE,
         auth: {
-            user: process.env.SMTP_MAIL,
-            pass: process.env.SMTP_APP_PASS
+            user: options.user || process.env.SMTP_MAIL,
+            pass: options.password || process.env.SMTP_APP_PASS
         },
     });
 

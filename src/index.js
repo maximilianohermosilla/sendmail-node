@@ -1,40 +1,34 @@
-import handlebars from 'express-handlebars';
-import __dirname from './utils.js'
 import express from 'express';
 import cors from 'cors';
+import handlebars from 'express-handlebars';
 import router from './routes/email.js';
+import sendEmail from './controllers/email.js';
+import __dirname from './utils.js'
 import dotenv from 'dotenv';
-dotenv.config();
-
-// const express = require('express');
-// const cors = require("cors");
-// const handlebars = require('express-handlebars');
-// const dirname = require('./utils.js');
-//require("dotenv").config();
+import {Server} from 'socket.io'
 
 const PORT = process.env.PORT || 5000;
 
 const app = express();
 
-app.engine('handlebars', handlebars.engine());
+const httpServer = app.listen(PORT, () => console.log(`Listening on PORT ${PORT}`));
+const socketServer = new Server(httpServer);
+app.use(express.json());
 
+app.engine('handlebars', handlebars.engine());
 app.set('views',__dirname+'/views');
 app.set('view engine', 'handlebars');
 app.use(express.static(__dirname+'/public'));
 
-app.use(express.json());
 
 app.use(cors({
     origin: ['http://localhost:5000'],
     credentials: true,
 }));
 
+dotenv.config();
 //app.use("/api", require("./routes/email"));
 app.use("/api", router);
-
-// app.get('/inicio', (req, res) => {
-//     res.send("Hola mundo!");
-// })
 
 app.get('/', (req, res) => {
     let testEmail = {
@@ -42,9 +36,23 @@ app.get('/', (req, res) => {
         message: "mensaje de prueba"
     }
 
-    res.render('index', testEmail);
+    res.render('index', {
+        testEmail: testEmail,
+        style: "index.css"
+    });
 })
 
-app.listen(PORT, () => {
-    console.log(`Server is started on ${PORT}...`);
+// app.listen(PORT, () => {
+//     console.log(`Server is started on ${PORT}...`);
+// })
+
+socketServer.on('connection', socket => {
+    console.log("Nuevo cliente conectado");
+
+    socket.on('send', async data => {
+        console.log(data);
+        let response;
+        let result = await sendEmail(JSON.parse(data), response);
+        console.log(result)
+    })
 })

@@ -1,15 +1,45 @@
 <div class="main__container">
-    <div>
-        <p><strong>Email: </strong> {{email}} </p>
-        <input type="text" id="txtEmail">
-    </div> 
-    <div>
-        <p><strong>Subject: </strong> {{email}} </p>
-        <input type="text" id="txtSubject">
-    </div> 
-    <div>
-        <p><strong>Mensaje: </strong> {{message}} </p>
-        <input type="text" id="txtmessage">
-    </div>
-    <button class="button__enviar" id="btnEnviar">Enviar</button>
+    <section class="section__principal">
+        <div class="input__container">
+            <p>EMAIL:</p>
+            <input type="text" id="txtEmail">
+        </div> 
+        <div class="input__container">
+            <p>ASUNTO:</p>
+            <input type="text" id="txtSubject">
+        </div> 
+        <div class="input__container">
+            <p>MENSAJE:</p>
+            <textarea name="txtMessage" id="txtMessage" cols="30" rows="10"></textarea>        
+        </div>
+
+        <div class="section__servidor"> 
+            <span>DATOS SERVIDOR</span>
+
+            <div>
+                <p>HOST:</p>
+                <input type="text" id="txtHost">
+            </div> 
+            <div>
+                <p>SERVICE:</p>
+                <input type="text" id="txtService">
+            </div> 
+            <div>
+                <p>PUERTO:</p>
+                <input type="text" id="txtPort">
+            </div> 
+            <div>
+                <p>USER:</p>
+                <input type="text" id="txtUser">
+            </div> 
+            <div>
+                <p>PASSWORD:</p>
+                <input type="text" id="txtPassword">
+            </div> 
+        </div>
+
+        <button class="button__enviar" id="btnEnviar">ENVIAR</button>
+    </section>
 </div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
